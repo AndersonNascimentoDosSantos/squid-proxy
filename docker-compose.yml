@@ -16,8 +16,6 @@ services:
       - ./data/traefik.yml:/traefik.yml:ro
       - ./data/acme.json:/acme.json
       - ./data/configurations:/configurations
-    networks:
-      - proxy
 
   squid:
     container_name: squid
