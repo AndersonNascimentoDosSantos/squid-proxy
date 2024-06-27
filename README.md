@@ -1,5 +1,8 @@
 # Squid Proxy descomplicado
 
+
+<a href="https://github.com/antonioanerao/squid-proxy"><img alt="Squid Proxy" src="https://antonio.anerao.dev/wp-content/uploads/2024/06/curl-usando-squid.jpeg" width="100%"></a>
+
 ### Sobre o Squid Proxy
 Squid é um proxy de cache que suporta HTTP, HTTPS, FTP, e mais. Ele é amplamente utilizado para melhorar o desempenho da rede e fornecer controle de acesso.
 
@@ -49,6 +52,12 @@ Suba sua stack Traefik + Squid Proxy
 
 ```bash
 docker compose up -d
+```
+
+Testando o retorno do seu proxy
+
+```bash
+curl -x seuUsuario:suaSenha@seudomini.com.br:9000 http://ip-api.com
 ```
 
 #### NOTAS IMPORTANTES
