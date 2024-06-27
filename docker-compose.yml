@@ -1,6 +1,25 @@
-version: "3"
+version: "3.7"
+
 services:
-  proxy:
+  traefik:
+    image: traefik
+    container_name: traefik
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/traefik.yml:/traefik.yml:ro
+      - ./data/acme.json:/acme.json
+      - ./data/configurations:/configurations
+    networks:
+      - proxy
+
+  squid:
     container_name: squid
     image: ubuntu/squid
     ports:
@@ -9,3 +28,8 @@ services:
       - ./squid.conf:/etc/squid/squid.conf
       - ./passwords:/etc/squid/passwords
     restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.squid.entrypoints=websecure"
+      - "traefik.http.routers.squid.rule=Host(`dominio.com.br`)"
+
