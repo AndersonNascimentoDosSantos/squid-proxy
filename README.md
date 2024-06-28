@@ -8,7 +8,7 @@ Squid é um proxy de cache que suporta HTTP, HTTPS, FTP, e mais. Ele é amplamen
 
 Outro exemplo de uso para um _proxy_ é fazer o deploy do serviço em um servidor nos Estados Unidos para acessar livremente o [https://claude.ai/](https://claude.ai/), que é bloqueado no Brasil.
 
-### Sobre o Traefik
+### Sobre o [Traefik](https://antonio.anerao.dev/traefik-com-ssl-renovacao-automatica/)
 Traefik é um roteador reverso moderno e dinâmico desenvolvido para fazer a integração com serviços de orquestração como Docker, Kubernetes, Consul, e outros. 
 
 Neste projeto ele é utilizado para rotear o tráfego HTTP e HTTPS para os containers e gerenciar certificados SSL automaticamente.
