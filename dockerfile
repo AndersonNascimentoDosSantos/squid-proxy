@@ -1,0 +1,1 @@
+FROM ubuntu/squid AS final
