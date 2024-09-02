@@ -13,8 +13,12 @@ FROM ubuntu/squid AS squid
 COPY ./squid.conf /etc/squid/squid.conf
 COPY ./passwords /etc/squid/passwords
 
+# Copiar o script de inicialização
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Definir as portas para o Traefik e Squid
 EXPOSE 80 443 3128
 
-# Comando para iniciar o Traefik
-CMD ["traefik", "--configFile=/traefik.yml"]
+# Comando para iniciar os serviços
+CMD ["/start.sh"]
