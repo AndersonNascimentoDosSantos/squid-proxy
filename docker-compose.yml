@@ -8,8 +8,8 @@ services:
     security_opt:
       - no-new-privileges:true
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"     # Usando a variável de ambiente para a porta HTTP
+      - "443:443"    # Usando a variável de ambiente para a 
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -21,7 +21,7 @@ services:
     container_name: squid
     image: ubuntu/squid
     ports:
-      - "9000:3128"
+      - "3128:3128"  # Usando a variável de ambiente para a porta de saída
     volumes:
       - ./squid.conf:/etc/squid/squid.conf
       - ./passwords:/etc/squid/passwords
@@ -29,5 +29,5 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.squid.entrypoints=websecure"
-      - "traefik.http.routers.squid.rule=Host(`dominio.com.br`)"
+      - "traefik.http.routers.squid.rule=Host(`$RAILWAY_PUBLIC_DOMAIN`)"  # Usando a variável de ambiente para o domínio
 
