@@ -1,24 +1,16 @@
-# Imagem base para o Traefik
-FROM traefik:latest AS traefik
+# Usar uma imagem base do Ubuntu
+FROM ubuntu:20.04
 
-# Copiar os arquivos de configuração do Traefik
-COPY ./data/traefik.yml /traefik.yml
-COPY ./data/acme.json /acme.json
-COPY ./data/configurations /configurations
+# Instalar o Squid
+RUN apt-get update && apt-get install -y squid && \
+    mkdir -p /var/log/squid /var/cache/squid && \
+    chown -R proxy:proxy /var/log/squid /var/cache/squid
 
-# Imagem base para o Squid
-FROM ubuntu/squid AS squid
+# Copiar o arquivo de configuração do Squid
+COPY squid.conf /etc/squid/squid.conf
 
-# Copiar os arquivos de configuração do Squid
-COPY ./squid.conf /etc/squid/squid.conf
-COPY ./passwords /etc/squid/passwords
+# Expor a porta do Squid
+EXPOSE 3128
 
-# Copiar o script de inicialização
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-# Definir as portas para o Traefik e Squid
-EXPOSE 80 443 3128
-
-# Comando para iniciar os serviços
-CMD ["/start.sh"]
+# Comando para iniciar o Squid
+CMD ["squid", "-N"]

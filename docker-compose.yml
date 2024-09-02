@@ -2,32 +2,23 @@ version: "3.7"
 
 services:
   traefik:
-    image: traefik
+    image: traefik:v2.5
     container_name: traefik
     restart: always
-    security_opt:
-      - no-new-privileges:true
     ports:
-      - "80:80"     # Usando a variável de ambiente para a porta HTTP
-      - "443:443"    # Usando a variável de ambiente para a 
+      - "80:80"
+      - "443:443"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./data/traefik.yml:/traefik.yml:ro
-      - ./data/acme.json:/acme.json
-      - ./data/configurations:/configurations
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/traefik.yml
 
   squid:
+    build: .
     container_name: squid
-    image: ubuntu/squid
     ports:
-      - "3128:3128"  # Usando a variável de ambiente para a porta de saída
-    volumes:
-      - ./squid.conf:/etc/squid/squid.conf
-      - ./passwords:/etc/squid/passwords
+      - "3128:3128"
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.squid.entrypoints=websecure"
-      - "traefik.http.routers.squid.rule=Host(`$RAILWAY_PUBLIC_DOMAIN`)"  # Usando a variável de ambiente para o domínio
-
+      - "traefik.http.routers.squid.rule=Host(`$RAILWAY_PUBLIC_DOMAI`)"  # Altere para seu domínio
+      - "traefik.http.services.squid.loadbalancer.server.port=3128"
